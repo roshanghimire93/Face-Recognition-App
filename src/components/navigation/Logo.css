@@ -1,0 +1,8 @@
+.Tilt {
+    background: LINEAR-GRADIENT(TO RIGHT, RGB(182, 236, 223), RGB(246, 164, 164));
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+}
