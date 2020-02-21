@@ -1,5 +1,6 @@
 {
   "name": "face-recognition",
+  "homepage": "https://roshanghimire93.github.io/Face-Recognition-App/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
