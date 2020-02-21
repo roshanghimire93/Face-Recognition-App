@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.05fa73d6.chunk.css",
+    "main.js": "/static/js/main.cce23913.chunk.js",
+    "main.js.map": "/static/js/main.cce23913.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.5e59705e.js",
+    "runtime-main.js.map": "/static/js/runtime-main.5e59705e.js.map",
+    "static/css/2.eb45ad44.chunk.css": "/static/css/2.eb45ad44.chunk.css",
+    "static/js/2.5996416e.chunk.js": "/static/js/2.5996416e.chunk.js",
+    "static/js/2.5996416e.chunk.js.map": "/static/js/2.5996416e.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.36661ccc53df36861e9e59c81510cadf.js": "/precache-manifest.36661ccc53df36861e9e59c81510cadf.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.eb45ad44.chunk.css.map": "/static/css/2.eb45ad44.chunk.css.map",
+    "static/css/main.05fa73d6.chunk.css.map": "/static/css/main.05fa73d6.chunk.css.map",
+    "static/js/2.5996416e.chunk.js.LICENSE.txt": "/static/js/2.5996416e.chunk.js.LICENSE.txt",
+    "static/media/facerecognition.png": "/static/media/facerecognition.24b38449.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5e59705e.js",
+    "static/css/2.eb45ad44.chunk.css",
+    "static/js/2.5996416e.chunk.js",
+    "static/css/main.05fa73d6.chunk.css",
+    "static/js/main.cce23913.chunk.js"
+  ]
+}
