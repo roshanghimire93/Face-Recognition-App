@@ -4,9 +4,11 @@ import './App.css';
 import Particles from 'react-particles-js';
 import Navigation from './components/navigation/Navigation';
 import FaceRecognition from './components/facerecognition/FaceRecognition';
-import Logo from './components/navigation/Logo';
-import ImageLinkForm from './components/navigation/ImageLinkForm';
-import Rank from './components/navigation/Rank';
+import Logo from './components/Logo/Logo';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import Rank from './components/Rank/Rank';
+import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 
 
 
@@ -42,7 +44,9 @@ class App extends Component {
     this.state = {
       input: '',
       imageurl: '',
-      box: {}
+      box: {},
+      route: 'signin',
+      isSignedIn: false
     }
   }
 
@@ -77,6 +81,22 @@ onInputChange = (event) => {
   });
 }
 
+onRouteChange = (route) => {
+  if(route === 'signout'){
+    this.setState({
+      isSignedIn: false
+    })
+  }
+  else if(route === 'home'){
+    this.setState({
+      isSignedIn: true
+    })
+  }
+  this.setState({
+    route: route
+  })
+}
+
 //Fetch the data from the API, calculate the detection box on the image and set the state of the box
 onSubmit = () => {
   this.setState({imageurl: this.state.input});
@@ -92,12 +112,19 @@ onSubmit = () => {
     return (
       <div className="App">
         <Particles className='particles' params={params}/>
-        <Navigation />
+        <Navigation isSignedIn ={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
         <Logo />
-        <Rank />
-        <ImageLinkForm onSubmit = {this.onSubmit} onInputChange = {this.onInputChange}/>
-        {console.log(this.state.box)}
-        <FaceRecognition box = {this.state.box} imageurl = {this.state.imageurl}/>
+        { this.state.route === 'home' ?
+          <div>
+            <Rank />
+            <ImageLinkForm onSubmit = {this.onSubmit} onInputChange = {this.onInputChange}/>
+            <FaceRecognition box = {this.state.box} imageurl = {this.state.imageurl}/>
+          </div>
+          : (this.state.route === 'signin') ? 
+            <SignIn onRouteChange={this.onRouteChange}/>
+          :
+            <Register onRouteChange={this.onRouteChange}/>
+        }
       </div>
     );
   }
