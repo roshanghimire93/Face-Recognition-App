@@ -14,3 +14,7 @@ code {
 button{
   cursor: pointer;
 }
+
+#camel-case{
+    text-transform: capitalize;
+}

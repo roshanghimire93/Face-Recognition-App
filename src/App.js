@@ -46,8 +46,27 @@ class App extends Component {
       imageurl: '',
       box: {},
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
+  }
+
+  //Load the active user after signin or register
+  loadUser = (userData) => {
+    this.setState({user:{
+      id: userData.id,
+      name: userData.name,
+      email: userData.email,
+      entries: userData.entries,
+      joined: userData.joined
+    }
+    })
   }
 
   //calculate the face detection box for the image. data is the response from the api
@@ -81,31 +100,60 @@ onInputChange = (event) => {
   });
 }
 
+//Change the routes in the application
 onRouteChange = (route) => {
   if(route === 'signout'){
     this.setState({
-      isSignedIn: false
+      isSignedIn: false,
+      route: 'signin'
     })
   }
   else if(route === 'home'){
     this.setState({
-      isSignedIn: true
+      isSignedIn: true,
+      route: route
     })
   }
-  this.setState({
-    route: route
-  })
+  else if (route === 'register'){
+    this.setState({
+      isSignedIn: false,
+      route: route
+    })
+  }
+
+  else if (route === 'signin'){
+    this.setState({
+      isSignedIn: false,
+      route: route
+    })
+  }
 }
 
 //Fetch the data from the API, calculate the detection box on the image and set the state of the box
-onSubmit = () => {
+onPictureSubmit = () => {
   this.setState({imageurl: this.state.input});
   app.models
     .predict(
       Clarifai.FACE_DETECT_MODEL,
       this.state.input)
-        .then(response => this.displayFacebox(this.calculateFaceLocation(response)))
-        .catch(error => console.log('Error with the CLarifai API', error));
+    .then(response => {
+      //Update the user entries to the server
+      if (response){
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              id: this.state.user.id,
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          this.setState(Object.assign(this.state.user, {entries: data.entries}))
+          })
+      }
+      this.displayFacebox(this.calculateFaceLocation(response))
+    })
+    .catch(error => console.log('Error with the CLarifai API', error));
 }
 
   render() {
@@ -113,17 +161,17 @@ onSubmit = () => {
       <div className="App">
         <Particles className='particles' params={params}/>
         <Navigation isSignedIn ={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-        <Logo />
+        <Logo isSignedIn ={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
         { this.state.route === 'home' ?
           <div>
-            <Rank />
-            <ImageLinkForm onSubmit = {this.onSubmit} onInputChange = {this.onInputChange}/>
+            <Rank name = {this.state.user.name} entries = {this.state.user.entries}/>
+            <ImageLinkForm onPictureSubmit = {this.onPictureSubmit} onInputChange = {this.onInputChange}/>
             <FaceRecognition box = {this.state.box} imageurl = {this.state.imageurl}/>
           </div>
           : (this.state.route === 'signin') ? 
-            <SignIn onRouteChange={this.onRouteChange}/>
+            <SignIn loadUser = {this.loadUser} onRouteChange={this.onRouteChange}/>
           :
-            <Register onRouteChange={this.onRouteChange}/>
+            <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
         }
       </div>
     );
