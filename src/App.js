@@ -38,23 +38,25 @@ const params={
   }
 }
 
+const initialState = {
+  input: '',
+  imageurl: '',
+  box: {},
+  route: 'signin',
+  isSignedIn: false,
+  user: {
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor(){
     super()
-    this.state = {
-      input: '',
-      imageurl: '',
-      box: {},
-      route: 'signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state = initialState;
   }
 
   //Load the active user after signin or register
@@ -103,6 +105,7 @@ onInputChange = (event) => {
 //Change the routes in the application
 onRouteChange = (route) => {
   if(route === 'signout'){
+    this.setState(initialState)
     this.setState({
       isSignedIn: false,
       route: 'signin'
@@ -132,12 +135,9 @@ onRouteChange = (route) => {
 //Fetch the data from the API, calculate the detection box on the image and set the state of the box
 onPictureSubmit = () => {
   this.setState({imageurl: this.state.input});
-  app.models
-    .predict(
-      Clarifai.FACE_DETECT_MODEL,
-      this.state.input)
+  app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
     .then(response => {
-      //Update the user entries to the server
+      //Update the user entries from the server
       if (response){
         fetch('http://localhost:3000/image', {
           method: 'put',
@@ -148,12 +148,16 @@ onPictureSubmit = () => {
         })
         .then(response => response.json())
         .then(data => {
-          this.setState(Object.assign(this.state.user, {entries: data.entries}))
-          })
+          this.setState(Object.assign(this.state.user, {entries: data}))
+        })
+        .catch(error => console.log)
       }
       this.displayFacebox(this.calculateFaceLocation(response))
     })
-    .catch(error => console.log('Error with the CLarifai API', error));
+    .catch(error => {
+      alert('URL is not Valid')
+      console.log('Error with the CLarifai API', error)
+    });
 }
 
   render() {
