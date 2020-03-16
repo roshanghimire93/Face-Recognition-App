@@ -40,13 +40,17 @@ class Register extends Component{
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data[0])
             if (data[0].id){
-                console.log(data[0])
                 this.props.loadUser(data[0])
                 this.props.onRouteChange('home')
             }
-            else{
+            else if(data === 'Incorrect form submission!'){
+                alert('Please Enter all the information!')
+            }
+            else if(data === 'Invalid email!'){
+                alert('Please enter a valid email!')
+            }
+            else {
                 alert('User already exists with that email!')
             }
         })

@@ -20,5 +20,4 @@ const Logo = ({isSignedIn, onRouteChange}) => {
         </div>
     )
 }
-
 export default Logo;
