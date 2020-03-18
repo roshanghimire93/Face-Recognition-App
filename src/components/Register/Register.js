@@ -29,7 +29,7 @@ class Register extends Component{
     }
 
     onSubmitRegister = () => {
-        fetch('http://localhost:3000/register', {
+        fetch('https://rocky-sands-93225.herokuapp.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -50,11 +50,10 @@ class Register extends Component{
             else if(data === 'Invalid email!'){
                 alert('Please enter a valid email!')
             }
-            else {
-                alert('User already exists with that email!')
+            else{
+                console.log()
             }
         })
-        .catch(err => console.log('Error with registering user!'))
     }
 
 

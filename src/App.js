@@ -126,7 +126,7 @@ onRouteChange = (route) => {
 //Fetch the data from the API, calculate the detection box on the image and set the state of the box
 onPictureSubmit = () => {
   this.setState({imageurl: this.state.input});
-  fetch('http://localhost:3000/imageurl', {
+  fetch('https://rocky-sands-93225.herokuapp.com/imageurl', {
     method: 'post',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
@@ -137,7 +137,7 @@ onPictureSubmit = () => {
     .then(response => {
       //Update the user entries from the server
       if (response) {
-        fetch('http://localhost:3000/image', {
+        fetch('https://rocky-sands-93225.herokuapp.com/image', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
